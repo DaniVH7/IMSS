@@ -24,3 +24,7 @@ Route::get('/unidades/{idmunicipio}', [JsonController::class, 'buscarUnidadesPor
 Route::get('/ver-json', function() {
     return view('json_view');
 });
+
+Route::get('tulancingo', function() {
+    return view('tulancingo');
+});
