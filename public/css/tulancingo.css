@@ -1,0 +1,107 @@
+:root {
+    --colorInstitucional1: #235B4E;
+    --colorInstitucional2: #10312B;
+    --colorInstitucional3: #DDC9A3;
+    --colorInstitucional4: #BC955C;
+    --colorInstitucional9: #FFFFFF;
+    --colorHeaderDark: #691C32;
+    --colorHeaderLight: #BC955C;
+    --colorFooter: #691C32;
+    --colorFooterText: #FFFFFF;
+    --colorBotonHover: #8B5E34;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--colorInstitucional9);
+    color: var(--colorInstitucional2);
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 4px solid var(--colorHeaderLight);
+}
+
+.header-top {
+    background-color: var(--colorHeaderDark);
+    color: white;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-top .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    height: calc(100vh - 140px);
+}
+
+.filters {
+    width: 25%;
+    padding: 1.5rem;
+    background-color: white;
+    border-right: 3px solid var(--colorInstitucional4);
+}
+
+.filters label {
+    font-size: 1rem;
+    color: var(--colorInstitucional2);
+    margin-bottom: 0.5rem;
+    display: block;
+    font-weight: bold;
+}
+
+.filters select, .filters button {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border: 2px solid var(--colorInstitucional1);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: white;
+}
+
+.filters button {
+    background-color: var(--colorInstitucional1);
+    color: white;
+    font-weight: bold;
+}
+
+.map {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#map {
+    width: 95%;
+    height: 90%;
+    border-radius: 12px;
+}
+
+footer {
+    background-color: var(--colorFooter);
+    color: var(--colorFooterText);
+    text-align: center;
+    padding: 1rem;
+    margin-top: 20px;
+}
+
+footer a {
+    color: var(--colorFooterText);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
