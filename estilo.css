@@ -1,0 +1,323 @@
+/********* (css institucional) *********/
+/* Colores Institucionales */
+:root {
+    --colorInstitucional1: #235B4E;
+    --colorInstitucional2: #10312B;
+    --colorInstitucional3: #DDC9A3;
+    --colorInstitucional4: #BC955C;
+    --colorInstitucional5: #98989A;
+    --colorInstitucional6: #6F7271;
+    --colorInstitucional7: #9F2241;
+    --colorInstitucional8: #691C32;
+    --colorInstitucional9: #efe4d2;
+    --colorInstitucional10: #cccccc;
+    --colorInstitucionalLinksTable: #4E232E;
+}
+/*- Colores Institucionales -*/
+
+/* Fuentes Institucionales */
+@font-face{    
+    font-family: "Institucional-Light";    
+    src: url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Light.otf");
+}
+
+@font-face{ 
+    font-family: "Institucional-Regular";    
+    src:url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Regular.otf");
+} 
+
+@font-face{    
+    font-family: "Institucional-Black";    
+    src: url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Black.otf");
+}
+
+@font-face{ 
+    font-family: "Institucional-Medium";
+    src:url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Medium.otf");
+}
+
+@font-face{ 
+    font-family: "Institucional-Semibold";    
+    src:url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Book.otf");
+} 
+
+@font-face{ 
+    font-family: "Institucional-Bold";    
+    src:url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Bold.otf");
+} 
+/*- Fuentes Institucionales -*/
+
+/** Estilos para MenÃº **/
+header.institucional{
+    background: var(--colorInstitucional2)!important;
+    background-image: url(http://ibhidalgo.org/cdn/img/BarraTitulo.svg)!important;
+    background-repeat: no-repeat!important;
+    /* background-blend-mode: multiply; */
+    background-position: right!important;
+    /* Agregados */
+    background-blend-mode: initial !important;
+    background-size: cover !important;
+}
+
+nav.menuinstitucional{
+	background-color: var(--colorInstitucional10)!important;
+    padding: 1px!important;
+    color: var(--colorInstitucional1)!important;
+    background-image: url(http://ibhidalgo.org/cdn/img/LogoMenu.svg)!important;
+    background-repeat: no-repeat!important;
+    background-blend-mode: multiply;
+    background-position: right;
+    background-position-y: top;
+    background-size: cover !important;
+}
+
+a.nav-link{
+    color: var(--colorInstitucional2);
+    font-weight: bold;
+}
+
+.dropdown-item:hover {
+    color: #fff!important;
+    text-decoration: none;
+    background-color: var(--colorInstitucional2)!important;
+}
+
+.nav-link.show{
+    background: var(--colorInstitucional2);
+    color: white!important;
+}
+
+a.activaMenu{
+    background-color:#f0f0f0!important;
+    color: #000000!important;
+    font-family: 'Institucional-Bold';
+    border-radius: 5px 5px 0 0;
+}
+
+a.nav-link:hover{
+    color:white!important;
+    background-color: var(--colorInstitucional2)!important;
+}
+/**- Estilos para MenÃº -**/
+
+/*Estilo Universal Body y HTML*/
+html, body {
+    font-family: "Institucional-Regular"!important;
+}
+
+/*Set de Fuentes*/
+h1, h2, h3, h4, h5, h6{
+    font-family: "Institucional-SemiBold"!important;
+}
+
+.font-institucional-sb{
+    font-family: "Institucional-SemiBold"!important;
+}
+
+.font-institucional-re{
+    font-family: "Institucional-Regular"!important;
+}
+
+.font-institucional-b{
+    font-family: "Institucional-Bold"!important;
+}
+
+.font-institucional-md{
+    font-family: "Institucional-Medium"!important;
+}
+
+/*-Set de Fuentes-*/
+
+/* Fondos Institucionales */
+.bg-institucionalescudo{
+    background-color: var(--colorInstitucional1);
+    background-image: url(http://ibhidalgo.org/cdn/img/Escudo.png)!important;
+    background-repeat: no-repeat!important;
+    background-size: cover !important;
+    /* background-blend-mode: multiply; */
+    /* Agregados */
+    background-blend-mode: initial !important;
+}
+
+.bg-institucional1{
+    background-color: var(--colorInstitucional1)!important;
+}
+
+.bg-institucional2{
+    background-color: var(--colorInstitucional2)!important;
+}
+
+.bg-institucional3{
+    background-color: var(--colorInstitucional3)!important;
+}
+
+.bg-institucional4{
+    background-color: var(--colorInstitucional4)!important;
+}
+
+.bg-institucional5{
+    background-color: var(--colorInstitucional5)!important;
+}
+
+.bg-institucional6{
+    background-color: var(--colorInstitucional6)!important;
+}
+
+.bg-institucional7{
+    background-color: var(--colorInstitucional7)!important;
+}
+
+.bg-institucional8{
+    background-color: var(--colorInstitucional8)!important;
+}
+
+.bg-institucional9{
+    background-color: var(--colorInstitucional9)!important;
+}
+
+.bg-institucional10{
+    background-color: var(--colorInstitucional10)!important;
+}
+/*- Fondos Institucionales -*/
+
+/* colores fuente Institucionales */
+.color-institucional1{
+    color: var(--colorInstitucional1)!important;
+}
+
+.color-institucional2{
+    color: var(--colorInstitucional2)!important;
+}
+
+.color-institucional3{
+    color: var(--colorInstitucional3)!important;
+}
+
+.color-institucional4{
+    color: var(--colorInstitucional4)!important;
+}
+
+.color-institucional5{
+    color: var(--colorInstitucional5)!important;
+}
+
+.color-institucional6{
+    color: var(--colorInstitucional6)!important;
+}
+
+.color-institucional7{
+    color: var(--colorInstitucional7)!important;
+}
+
+.color-institucional8{
+    color: var(--colorInstitucional8)!important;
+}
+
+.color-institucional9{
+    color: var(--colorInstitucional9)!important;
+}
+
+.color-institucional10{
+    color: var(--colorInstitucional10)!important;
+}
+/*- colores fuente Institucionales -*/
+
+/* Estilos para los inputs y selects */
+input[type="text"], select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--colorInstitucional5); /* Color institucional gris */
+    border-radius: 5px;
+    font-family: "Institucional-Regular";
+    font-size: 16px;
+    color: var(--colorInstitucional2); /* Color de texto */
+    background-color: var(--colorInstitucional9); /* Fondo claro */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Efecto al pasar el mouse */
+input[type="text"]:hover, select:hover {
+    border-color: var(--colorInstitucional4); /* Dorado */
+}
+
+/* Efecto al enfocar (clic) */
+input[type="text"]:focus, select:focus {
+    border-color: var(--colorInstitucional7); /* Rojo oscuro */
+    background-color: white;
+    outline: none;
+    box-shadow: 0px 0px 5px var(--colorInstitucional7);
+}
+
+/* Estilos específicos para Select2 */
+.select2-container .select2-selection--single {
+    height: 40px;
+    border: 2px solid var(--colorInstitucional5);
+    border-radius: 5px;
+    font-family: "Institucional-Regular";
+    font-size: 16px;
+    background-color: var(--colorInstitucional9);
+    transition: all 0.3s ease-in-out;
+}
+
+.select2-container .select2-selection--single:hover {
+    border-color: var(--colorInstitucional4);
+}
+
+.select2-container .select2-selection--single:focus {
+    border-color: var(--colorInstitucional7);
+    box-shadow: 0px 0px 5px var(--colorInstitucional7);
+}
+
+/* Ajuste del texto dentro del select */
+.select2-container .select2-selection__rendered {
+    padding: 8px;
+    color: var(--colorInstitucional2);
+}
+
+/* Flecha del dropdown en Select2 */
+.select2-container .select2-selection__arrow {
+    height: 100%;
+    right: 10px;
+}
+
+/* Fondo y estilos del dropdown de Select2 */
+.select2-dropdown {
+    background-color: var(--colorInstitucional9);
+    border: 2px solid var(--colorInstitucional5);
+    font-family: "Institucional-Regular";
+}
+
+/* Opciones dentro del dropdown */
+.select2-results__option {
+    padding: 10px;
+    color: var(--colorInstitucional2);
+}
+
+/* Opción seleccionada */
+.select2-results__option--highlighted {
+    background-color: var(--colorInstitucional4);
+    color: white;
+}
+
+/* Ajuste para el botón */
+button {
+    background-color: var(--colorInstitucional1);
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-family: "Institucional-Bold";
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Efecto hover en botón */
+button:hover {
+    background-color: var(--colorInstitucional2);
+}
+
+/* Efecto al hacer clic */
+button:active {
+    transform: scale(0.98);
+}
