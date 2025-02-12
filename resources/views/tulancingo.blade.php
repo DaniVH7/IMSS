@@ -4,9 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa Interactivo - Unidades Médicas en Tulancingo</title>
+    
+    <!-- Estilos de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Estilos de Select2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+    
     <link rel="stylesheet" href="{{ asset('css/tulancingo.css') }}">
+    
+    <!-- Scripts de Leaflet y jQuery -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 </head>
 <body>
     <header>
@@ -17,14 +27,16 @@
     <div class="container">
         <div class="filters">
             <h2>Filtrar Unidades Médicas</h2>
+
             <label for="busqueda">Ingrese el Nombre o CLUES:</label>
-            <input type="text" id="busqueda" placeholder="Ejemplo: TULANCINGO o HGIMB003844" oninput="mostrarSugerencias()">
-            
-            <!-- Nuevo div para mostrar sugerencias en vivo -->
-            <div id="sugerencias" class="autocomplete-suggestions"></div>
+            <select id="busqueda" class="select2">
+                <option value=""></option>
+            </select>
 
             <label for="tipo_unidad">Filtrar por Tipo de Unidad Médica:</label>
-            <select id="tipo_unidad"></select>
+            <select id="tipo_unidad" class="select2">
+                <option value="">Todos los tipos de unidades</option>
+            </select>
 
             <button onclick="buscarUnidades()">Buscar</button>
         </div>
@@ -33,7 +45,6 @@
         </div>
     </div>
 
-    <!-- Nuevo div para mostrar los resultados después de hacer clic en buscar -->
     <div id="resultado" class="resultado-busqueda"></div>
 
     <footer>
@@ -50,74 +61,63 @@
 
         async function initMap() {
             map = L.map('map').setView([20.0923182, -98.3670238], 13);
-
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
-
             markersLayer = L.layerGroup().addTo(map);
         }
 
         async function cargarUnidades() {
-            unidades = await fetch('/json/unidades.json').then(res => res.json());
-            tiposUnidades = await fetch('/json/tipos_unidades.json').then(res => res.json());
+            try {
+                unidades = await fetch('/json/unidades.json').then(res => res.json());
+                tiposUnidades = await fetch('/json/tipos_unidades.json').then(res => res.json());
 
-            unidades = unidades.filter(u => u.idmunicipio === "077");
+                // Filtrar solo unidades de Tulancingo (077)
+                unidades = unidades.filter(u => u.idmunicipio === "077");
 
-            const selectTipoUnidad = document.getElementById('tipo_unidad');
-            selectTipoUnidad.innerHTML = '<option value="">Todos los tipos de unidades</option>';
+                // Cargar unidades médicas en el select con Select2
+                const selectBusqueda = $('#busqueda');
+                selectBusqueda.empty().append('<option value="">Seleccione una unidad médica</option>');
 
-            tiposUnidades.forEach(t => {
-                let option = document.createElement('option');
-                option.value = t.idtipo_unidad;
-                option.textContent = t.tipo_unidad;
-                selectTipoUnidad.appendChild(option);
-            });
-        }
+                unidades.forEach(u => {
+                    selectBusqueda.append(new Option(`${u.nombre} (CLUES: ${u.clues})`, u.clues));
+                });
 
-        function mostrarSugerencias() {
-            const query = document.getElementById('busqueda').value.trim().toLowerCase();
-            const sugerenciasDiv = document.getElementById('sugerencias');
+                selectBusqueda.select2({
+                    placeholder: "Seleccione una unidad médica",
+                    allowClear: true
+                });
 
-            sugerenciasDiv.innerHTML = '';
-
-            if (!query) return;
-
-            let unidadesFiltradas = unidades.filter(u =>
-                u.nombre.toLowerCase().includes(query) || u.clues.toLowerCase().includes(query)
-            ).slice(0, 5); 
-
-            if (unidadesFiltradas.length === 0) {
-                sugerenciasDiv.style.display = "none";
-                return;
-            }
-
-            sugerenciasDiv.style.display = "block";
-            unidadesFiltradas.forEach(u => {
-                let div = document.createElement('div');
-                div.textContent = `${u.nombre} (CLUES: ${u.clues})`;
-                div.onclick = function() {
-                    document.getElementById('busqueda').value = u.nombre;
-                    sugerenciasDiv.innerHTML = ''; 
-                    sugerenciasDiv.style.display = "none";
+                selectBusqueda.on('change', function() {
                     buscarUnidades();
-                };
-                sugerenciasDiv.appendChild(div);
-            });
+                });
+
+                // Cargar tipos de unidad en el select con Select2
+                const selectTipoUnidad = $('#tipo_unidad');
+                selectTipoUnidad.empty().append('<option value="">Todos los tipos de unidades</option>');
+
+                tiposUnidades.forEach(t => {
+                    selectTipoUnidad.append(new Option(t.tipo_unidad, t.idtipo_unidad));
+                });
+
+                selectTipoUnidad.select2({
+                    placeholder: "Seleccione un tipo de unidad",
+                    allowClear: true
+                });
+
+            } catch (error) {
+                console.error("Error al cargar las unidades médicas:", error);
+            }
         }
 
         function buscarUnidades() {
-            const query = document.getElementById('busqueda').value.trim().toLowerCase();
+            const query = $('#busqueda').val();
             const resultadoDiv = document.getElementById('resultado');
-            const sugerenciasDiv = document.getElementById('sugerencias');
 
             resultadoDiv.innerHTML = '';
-            sugerenciasDiv.innerHTML = ''; 
-            sugerenciasDiv.style.display = "none";
 
-            let unidadesFiltradas = unidades.filter(u =>
-                u.nombre.toLowerCase().includes(query) || u.clues.toLowerCase().includes(query)
-            );
+            // Filtra unidades basadas en la selección
+            let unidadesFiltradas = unidades.filter(u => u.clues === query || u.nombre.includes(query));
 
             resultadoDiv.innerHTML = `
                 <h2>Resultados de Búsqueda</h2>
@@ -148,10 +148,10 @@
             }
         }
 
-        window.onload = function() {
+        $(document).ready(function() {
             initMap();
             cargarUnidades();
-        };
+        });
     </script>
 </body>
 </html>
