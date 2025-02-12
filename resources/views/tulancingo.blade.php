@@ -32,7 +32,8 @@
             <select id="busqueda" class="select2">
                 <option value=""></option>
             </select>
-
+            <br>
+            <br>
             <label for="tipo_unidad">Filtrar por Tipo de Unidad Médica:</label>
             <select id="tipo_unidad" class="select2">
                 <option value="">Todos los tipos de unidades</option>
