@@ -221,3 +221,103 @@ h1, h2, h3, h4, h5, h6{
     color: var(--colorInstitucional10)!important;
 }
 /*- colores fuente Institucionales -*/
+
+/* Estilos para los inputs y selects */
+input[type="text"], select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--colorInstitucional5); /* Color institucional gris */
+    border-radius: 5px;
+    font-family: "Institucional-Regular";
+    font-size: 16px;
+    color: var(--colorInstitucional2); /* Color de texto */
+    background-color: var(--colorInstitucional9); /* Fondo claro */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Efecto al pasar el mouse */
+input[type="text"]:hover, select:hover {
+    border-color: var(--colorInstitucional4); /* Dorado */
+}
+
+/* Efecto al enfocar (clic) */
+input[type="text"]:focus, select:focus {
+    border-color: var(--colorInstitucional7); /* Rojo oscuro */
+    background-color: white;
+    outline: none;
+    box-shadow: 0px 0px 5px var(--colorInstitucional7);
+}
+
+/* Estilos específicos para Select2 */
+.select2-container .select2-selection--single {
+    height: 40px;
+    border: 2px solid var(--colorInstitucional5);
+    border-radius: 5px;
+    font-family: "Institucional-Regular";
+    font-size: 16px;
+    background-color: var(--colorInstitucional9);
+    transition: all 0.3s ease-in-out;
+}
+
+.select2-container .select2-selection--single:hover {
+    border-color: var(--colorInstitucional4);
+}
+
+.select2-container .select2-selection--single:focus {
+    border-color: var(--colorInstitucional7);
+    box-shadow: 0px 0px 5px var(--colorInstitucional7);
+}
+
+/* Ajuste del texto dentro del select */
+.select2-container .select2-selection__rendered {
+    padding: 8px;
+    color: var(--colorInstitucional2);
+}
+
+/* Flecha del dropdown en Select2 */
+.select2-container .select2-selection__arrow {
+    height: 100%;
+    right: 10px;
+}
+
+/* Fondo y estilos del dropdown de Select2 */
+.select2-dropdown {
+    background-color: var(--colorInstitucional9);
+    border: 2px solid var(--colorInstitucional5);
+    font-family: "Institucional-Regular";
+}
+
+/* Opciones dentro del dropdown */
+.select2-results__option {
+    padding: 10px;
+    color: var(--colorInstitucional2);
+}
+
+/* Opción seleccionada */
+.select2-results__option--highlighted {
+    background-color: var(--colorInstitucional4);
+    color: white;
+}
+
+/* Ajuste para el botón */
+button {
+    background-color: var(--colorInstitucional1);
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-family: "Institucional-Bold";
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Efecto hover en botón */
+button:hover {
+    background-color: var(--colorInstitucional2);
+}
+
+/* Efecto al hacer clic */
+button:active {
+    transform: scale(0.98);
+}
