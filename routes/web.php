@@ -28,3 +28,12 @@ Route::get('/ver-json', function() {
 Route::get('tulancingo', function() {
     return view('tulancingo');
 });
+
+Route::get('pruebas', function(){
+    //dd(App\Models\Estado::all());
+    //dd(App\Models\Estado::where('estado', 'LIKE', '%H%')->get());
+    //dd(App\Models\Jurisdiccion::all());
+
+    //dd(App\Models\Estado::with('jurisdicciones')->get());
+    dd(App\Models\Jurisdiccion::with('estado')->get());
+});
