@@ -53,4 +53,7 @@ Route::get('pruebas', function(){
 
     // Visaulizar todos los motivos de baja
     //dd(App\Models\MotivosBaja::all());
+
+    // Visualizar todos los niveles de atención
+    //dd(App\Models\NivelAtencion::all());
 });
