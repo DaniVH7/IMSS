@@ -76,5 +76,8 @@ Route::get('pruebas', function(){
     //dd(App\Models\TipoEstablecimiento::all());
 
     // Visualizar todos los tipos de unidades
-    dd(App\Models\TipoUnidad::all());
+    //dd(App\Models\TipoUnidad::all());
+
+    // Visualizar todos los tipos de vialidades
+    dd(App\Models\TipoVialidad::all());
 });
