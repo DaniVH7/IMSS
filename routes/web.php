@@ -59,4 +59,7 @@ Route::get('pruebas', function(){
 
     // Visualizar todos los status de unidades
     //dd(App\Models\StatusUnidad::all());
+
+    // Visualizar todas las subtipologias
+    //dd(App\Models\Subtipologia::all());
 });
