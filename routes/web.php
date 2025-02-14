@@ -67,5 +67,8 @@ Route::get('pruebas', function(){
     //dd(App\Models\TipologiaUnidad::all());
 
     // Visualizar todos los tipos de administración
-    dd(App\Models\TipoAdministracion::all());
+    //dd(App\Models\TipoAdministracion::all());
+
+    // Visualizar todos los tipos de asentamientos
+    dd(App\Models\TipoAsentamiento::all());
 });
