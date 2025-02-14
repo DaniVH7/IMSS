@@ -79,5 +79,8 @@ Route::get('pruebas', function(){
     //dd(App\Models\TipoUnidad::all());
 
     // Visualizar todos los tipos de vialidades
-    dd(App\Models\TipoVialidad::all());
+    //dd(App\Models\TipoVialidad::all());
+
+    // Visualizar todos los municipios
+    dd(App\Models\Municipio::all());
 });
