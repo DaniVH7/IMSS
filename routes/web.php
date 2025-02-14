@@ -64,5 +64,8 @@ Route::get('pruebas', function(){
     //dd(App\Models\Subtipologia::all());
 
     // Visualizar todas las tipologias de unidades
-    dd(App\Models\TipologiaUnidad::all());
+    //dd(App\Models\TipologiaUnidad::all());
+
+    // Visualizar todos los tipos de administración
+    dd(App\Models\TipoAdministracion::all());
 });
