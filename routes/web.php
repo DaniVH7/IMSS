@@ -48,5 +48,6 @@ Route::get('pruebas', function(){
     // Visualizar todos los estratos
     //dd(App\Models\Estrato::all());
 
-    
+    // Visualizar todas las instituciones
+    //dd(App\Models\Institucion::all());
 });
