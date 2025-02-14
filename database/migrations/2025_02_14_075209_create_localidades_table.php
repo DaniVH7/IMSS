@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('localidades', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->string('idlocalidad', 4);
+            $table->string('idestado', 3);
+            $table->string('idmunicipio', 3);
+            $table->string('localidad', 100);
+            $table->primary(['idestado', 'idmunicipio', 'idlocalidad']); // Índice único combinado
+
         });
     }
 

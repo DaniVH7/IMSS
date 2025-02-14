@@ -82,5 +82,8 @@ Route::get('pruebas', function(){
     //dd(App\Models\TipoVialidad::all());
 
     // Visualizar todos los municipios
-    dd(App\Models\Municipio::all());
+    //dd(App\Models\Municipio::all());
+
+    // Visualizar todos las localidades
+    dd(App\Models\Localidad::all());
 });
