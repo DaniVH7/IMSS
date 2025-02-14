@@ -56,4 +56,7 @@ Route::get('pruebas', function(){
 
     // Visualizar todos los niveles de atención
     //dd(App\Models\NivelAtencion::all());
+
+    // Visualizar todos los status de unidades
+    //dd(App\Models\StatusUnidad::all());
 });
