@@ -50,4 +50,7 @@ Route::get('pruebas', function(){
 
     // Visualizar todas las instituciones
     //dd(App\Models\Institucion::all());
+
+    // Visaulizar todos los motivos de baja
+    //dd(App\Models\MotivosBaja::all());
 });
