@@ -73,5 +73,8 @@ Route::get('pruebas', function(){
     //dd(App\Models\TipoAsentamiento::all());
 
     // Visualizar todos los tipos de establecimiento
-    dd(App\Models\TipoEstablecimiento::all());
+    //dd(App\Models\TipoEstablecimiento::all());
+
+    // Visualizar todos los tipos de unidades
+    dd(App\Models\TipoUnidad::all());
 });

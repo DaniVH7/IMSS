@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tipos_unidades', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->string('idtipo_unidad', 3)->primary();
+            $table->string('tipo_unidad', 50);
         });
     }
 
