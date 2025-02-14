@@ -62,4 +62,7 @@ Route::get('pruebas', function(){
 
     // Visualizar todas las subtipologias
     //dd(App\Models\Subtipologia::all());
+
+    // Visualizar todas las tipologias de unidades
+    dd(App\Models\TipologiaUnidad::all());
 });
