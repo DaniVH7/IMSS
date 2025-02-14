@@ -30,10 +30,23 @@ Route::get('tulancingo', function() {
 });
 
 Route::get('pruebas', function(){
+
+    //Visualizar todos los estados
     //dd(App\Models\Estado::all());
-    //dd(App\Models\Estado::where('estado', 'LIKE', '%H%')->get());
+
+        //Visualizar todos los municipios que empiecen con la letra H
+        //dd(App\Models\Estado::where('estado', 'LIKE', '%H%')->get());
+    
+    // Visualizar todos las jurisdicciones
     //dd(App\Models\Jurisdiccion::all());
 
-    //dd(App\Models\Estado::with('jurisdicciones')->get());
-    dd(App\Models\Jurisdiccion::with('estado')->get());
+        // Visualizar los estados con sus jurisdicciones
+        //dd(App\Models\Estado::with('jurisdicciones')->get());
+        // Visualizar las jurisdicciones con sus estados
+        //dd(App\Models\Jurisdiccion::with('estado')->get());
+
+    // Visualizar todos los estratos
+    //dd(App\Models\Estrato::all());
+
+    
 });
