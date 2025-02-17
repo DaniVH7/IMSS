@@ -85,5 +85,13 @@ Route::get('pruebas', function(){
     //dd(App\Models\Municipio::all());
 
     // Visualizar todos las localidades
-    dd(App\Models\Localidad::all());
+    // dd(App\Models\Localidad::all());
+
+    // Visualizar todos las Unidades
+    // dd(App\Models\Unidad::all());
+
+    // Visualizar todos las Unidades
+    dd(App\Models\UnidadHospital::all());
+    
+    
 });
