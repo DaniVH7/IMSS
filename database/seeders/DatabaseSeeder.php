@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             TiposVialidadSeeder::class,
             LocalidadesSeeder::class,
             UnidadesSeeder::class,
-            UnidadesHospitales::Seeder
+            UnidadesHospitales::class
         ]);
     }
 }
