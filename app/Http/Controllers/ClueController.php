@@ -68,39 +68,48 @@ public function buscarUnidadesPorMunicipio(Request $request)
 //consulta para buscar unidades por jurisdiccion
 public function buscarUnidadesTulancingo(Request $request)
 {
-    $localidades = DB::table('localidades as l')
-        ->join('municipios as m', 'l.idmunicipio', '=', 'm.idmunicipio')
-        ->join('jurisdicciones as j', 'm.idjurisdiccion', '=', 'j.idjurisdiccion')
-        ->where('j.jurisdiccion', '=', 'Jurisdicción Sanitaria II Tulancingo')
-        ->select('l.idlocalidad', 'l.localidad')
-        ->distinct()
-        ->get();
+    try {
+        $unidades = DB::table('unidades as u')
+            ->join('municipios as m', 'u.idmunicipio', '=', 'm.idmunicipio')
+            ->join('jurisdicciones as j', 'm.idjurisdiccion', '=', 'j.idjurisdiccion')
+            ->where('j.jurisdiccion', '=', 'Jurisdicción Sanitaria II Tulancingo') // Filtrar solo Tulancingo
+            ->select(
+                'u.clues',
+                'u.nombre as unidad_medica',
+                'u.latitud',
+                'u.longitud'
+            )
+            ->get();
 
-    return response()->json($localidades);
+        if ($unidades->isEmpty()) {
+            return response()->json(['error' => 'No se encontraron unidades en esta jurisdicción'], 404);
+        }
+
+        return response()->json($unidades);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error en la consulta: ' . $e->getMessage()], 500);
+    }
 }
+
+
+
 
 
 //consulta para buscar unidades por localidad
 public function buscarUnidadesPorLocalidad(Request $request)
 {
-    $localidadId = $request->input('idlocalidad');
+    $localidad = $request->input('localidad');
 
-    if (!$localidadId) {
+    if (!$localidad) {
         return response()->json([]);
     }
 
-    $unidades = DB::table('unidades as u')
-        ->join('localidades as l', 'u.idlocalidad', '=', 'l.idlocalidad')
-        ->where('l.idlocalidad', '=', $localidadId)
-        ->select(
-            'u.clues',
-            'u.nombre as unidad_medica',
-            'u.latitud',
-            'u.longitud'
-        )
+    $resultados = DB::table('unidades')
+        ->where('nombre', 'LIKE', "%$localidad%") // Ajusta 'nombre' según tu tabla
+        ->select('clues', 'nombre as unidad_medica', 'latitud', 'longitud')
         ->get();
 
-    return response()->json($unidades);
+    return response()->json($resultados);
 }
 
 }

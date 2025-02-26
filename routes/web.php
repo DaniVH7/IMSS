@@ -24,6 +24,15 @@ Route::get('/api/unidades/buscarUnidadesTulancingo', [ClueController::class, 'bu
 
 Route::get('/api/unidades/buscarUnidadesTulancingo', [ClueController::class, 'buscarUnidadesTulancingo']);
 Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
+Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
+Route::get('/api/unidades/buscarUnidadesPorJurisdiccion', [ClueController::class, 'buscarUnidadesPorJurisdiccion']);
+
+Route::get('/api/unidades/buscarUnidadesTulancingo', [ClueController::class, 'buscarUnidadesTulancingo']);
+Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
+Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
+Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
+Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
+
 
 
 
