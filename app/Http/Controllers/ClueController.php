@@ -13,28 +13,50 @@ use App\Models\Municipio;
 class ClueController extends Controller
 {
     public function buscarClues(Request $request)
-{
-    $query = $request->input('query');
-
-    if (!$query) {
-        return response()->json([]);
+    {
+        $query = $request->input('query');
+    
+        if (!$query) {
+            return response()->json([]);
+        }
+    
+        $unidades = DB::table('unidades as u')
+            ->join('municipios as m', 'u.idmunicipio', '=', 'm.idmunicipio')
+            ->join('localidades as l', 'u.idlocalidad', '=', 'l.idlocalidad') 
+            ->where('u.clues', 'LIKE', "%$query%")
+            ->orWhere('u.nombre', 'LIKE', "%$query%")
+            ->limit(10)
+            ->select(
+                'u.clues',
+                'u.nombre as unidad_medica',
+                'u.latitud',
+                'u.longitud',
+                'u.idmunicipio',  // ✅ Incluir ID del municipio
+                'm.municipio as nombre_municipio',
+                'u.idlocalidad',  // ✅ Incluir ID de la localidad
+                'l.localidad as nombre_localidad'
+            )
+            ->get();
+    
+        return response()->json($unidades->map(function ($unidad) {
+            return [
+                'id' => $unidad->clues,
+                'nombre' => $unidad->unidad_medica,
+                'clues' => $unidad->clues,
+                'latitud' => $unidad->latitud,
+                'longitud' => $unidad->longitud,
+                'idmunicipio' => $unidad->idmunicipio,  // ✅ Ahora el JSON incluye ID del municipio
+                'municipio' => $unidad->nombre_municipio,
+                'idlocalidad' => $unidad->idlocalidad,  // ✅ Ahora el JSON incluye ID de la localidad
+                'localidad' => $unidad->nombre_localidad
+            ];
+        }));
     }
+    
 
-    $unidades = Unidad::where('clues', 'LIKE', "%$query%")
-        ->orWhere('nombre', 'LIKE', "%$query%")
-        ->limit(10)
-        ->get(['clues', 'nombre', 'latitud', 'longitud']);
 
-    return response()->json($unidades->map(function ($unidad) {
-        return [
-            'id' => $unidad->clues,
-            'nombre' => $unidad->nombre,
-            'clues' => $unidad->clues,
-            'latitud' => $unidad->latitud,
-            'longitud' => $unidad->longitud
-        ];
-    }));
-}
+
+
 
 // Consulta para buscar jurisdicción y unidades médicas asociadas a un municipio con coordenadas
 public function buscarUnidadesPorMunicipio(Request $request)
@@ -111,5 +133,8 @@ public function buscarUnidadesPorLocalidad(Request $request)
 
     return response()->json($resultados);
 }
+
+
+
 
 }

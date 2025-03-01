@@ -125,3 +125,13 @@ Route::get('pruebas', function () {
     // Visualizar todos las Unidades
     dd(App\Models\UnidadHospital::all());
 });
+
+
+
+Route::get('/mapa2', function () {
+    return view('mapa2');
+});
+
+use App\Http\Controllers\UnidadMedicaController;
+
+Route::get('/unidades/obtenerUnidadPorClues', [UnidadMedicaController::class, 'obtenerUnidadPorClues']);

@@ -60,8 +60,9 @@ class Unidad extends Model
     }
 
     public function localidad() {
-        return $this->belongsTo(Localidad::class, ['idestado', 'idmunicipio', 'idlocalidad'], ['idestado', 'idmunicipio', 'idlocalidad']);
+        return $this->belongsTo(Localidad::class, 'idlocalidad', 'idlocalidad');
     }
+    
 
     public function jurisdiccion() {
         return $this->belongsTo(Jurisdiccion::class, 'idjurisdiccion', 'idjurisdiccion');

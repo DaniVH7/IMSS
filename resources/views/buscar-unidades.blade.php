@@ -45,6 +45,16 @@
 
     <script>
         let map, markers = [];
+        window.clearMarkers = function() {
+    if (markers.length > 0) {
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
+        console.log("Marcadores eliminados correctamente");
+    } else {
+        console.log("No hay marcadores para eliminar");
+    }
+};
+
 
         $(document).ready(function() {
             $('#searchJurisdiccion').html('<option selected>Jurisdicción Sanitaria II Tulancingo</option>').prop('disabled', true);
@@ -413,6 +423,22 @@
             }).addTo(map);
 
         });
+        window.addMarker = function(lat, lng, name, clues) {
+    let marker = L.marker([lat, lng]).addTo(map)
+        .bindPopup(`<b>${name}</b><br>CLUES: ${clues}`)
+        .openPopup();
+    markers.push(marker);
+};
+
+window.ajustarMapa = function() {
+    if (markers.length === 0) return;
+    let group = new L.featureGroup(markers);
+    map.fitBounds(group.getBounds(), {
+        padding: [50, 50]
+    });
+};
+
+
     </script>
 
 </head>
@@ -424,19 +450,11 @@
     <fieldset>
         <legend>Búsqueda por CLUES</legend>
         <select id="searchClues" style="width: 50%;"></select>
-        <button id="btnSearchClues">Buscar</button>
     </fieldset>
 
     <fieldset>
         <legend>Búsqueda por Municipio</legend>
         <select id="searchMunicipio" style="width: 50%;"></select>
-        <button id="btnSearchMunicipio">Buscar</button>
-    </fieldset>
-
-    <fieldset>
-        <legend>Jurisdicción Sanitaria II Tulancingo</legend>
-        <select id="searchJurisdiccion" style="width: 50%;"></select>
-        <button id="btnSearchJurisdiccion">Buscar</button>
     </fieldset>
 
     <fieldset>
@@ -445,12 +463,18 @@
         <select id="searchLocalidad" style="width: 50%;">
             <option value="">Seleccione una Localidad</option>
         </select>
-        <button id="btnSearchLocalidad">Buscar Unidades</button>
+    </fieldset>
+
+    <fieldset>
+        <legend>Jurisdicción Sanitaria II Tulancingo</legend>
+        <select id="searchJurisdiccion" style="width: 50%;"></select>
+        <button id="btnSearchJurisdiccion" style="margin-top: 10px; padding: 5px 10px; cursor: pointer;">Buscar</button>
     </fieldset>
 
 
 
     <button id="btnResetFilters" style="margin-top: 10px; padding: 5px 10px; cursor: pointer;">Restablecer Filtros</button>
+    <button id="btnGlobalSearch" style="margin-top: 10px; padding: 5px 10px; cursor: pointer;">Buscar</button>
 
     <div id="selectedInfo"></div>
     <div id="map"></div>
@@ -458,6 +482,8 @@
 
     <div id="selectedInfo"></div>
     <div id="map"></div>
+    <script src="{{ asset('js/buttons.js') }}"></script>
+    <script src="{{ asset('js/autofill.js') }}"></script>
 
 </body>
 
