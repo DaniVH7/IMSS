@@ -18,6 +18,11 @@ Route::get('/api/unidades/obtenerDatosPorClues', [TodoController::class, 'obtene
 
 
 
+Route::get('/unidades/buscarLocalidadesPorMunicipio', [ClueController::class, 'buscarLocalidadesPorMunicipio']);
+
+Route::get('/unidades/buscarLocalidadesConUnidades', [ClueController::class, 'buscarLocalidadesConUnidades']);
+
+
 Route::get('/', function () {
     return view('welcome');
 });

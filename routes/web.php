@@ -25,7 +25,6 @@ Route::get('/api/unidades/buscarUnidadesTulancingo', [ClueController::class, 'bu
 Route::get('/api/unidades/buscarUnidadesTulancingo', [ClueController::class, 'buscarUnidadesTulancingo']);
 Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
 Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
-Route::get('/api/unidades/buscarUnidadesPorJurisdiccion', [ClueController::class, 'buscarUnidadesPorJurisdiccion']);
 
 Route::get('/api/unidades/buscarUnidadesTulancingo', [ClueController::class, 'buscarUnidadesTulancingo']);
 Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
@@ -33,6 +32,8 @@ Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, '
 Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
 Route::get('/api/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
 
+
+Route::get('/api/unidades/buscarJurisdicciones', [ClueController::class, 'buscarJurisdicciones']);
 
 
 
@@ -135,3 +136,31 @@ Route::get('/mapa2', function () {
 use App\Http\Controllers\UnidadMedicaController;
 
 Route::get('/unidades/obtenerUnidadPorClues', [UnidadMedicaController::class, 'obtenerUnidadPorClues']);
+
+
+Route::get('/mapa', function () {
+    return view('mapa');
+});
+
+
+Route::get('/api/unidades/buscarMunicipiosConUnidades', [ClueController::class, 'buscarMunicipiosConUnidades']);
+Route::get('/api/unidades/buscarJurisdicciones', [ClueController::class, 'buscarJurisdicciones']);
+Route::get('/api/unidades/buscarUnidadesPorJurisdiccion', [ClueController::class, 'buscarUnidadesPorJurisdiccion']);
+
+Route::get('/unidades/buscarMunicipiosConUnidades', [ClueController::class, 'buscarMunicipiosConUnidades']);
+
+
+
+
+
+Route::get('/unidades/buscarLocalidadesConUnidades', [ClueController::class, 'buscarLocalidadesConUnidades']);
+Route::get('/api/unidades/buscarLocalidadesConUnidades', [ClueController::class, 'buscarLocalidadesConUnidades']);
+Route::get('/unidades/buscarUnidadesPorLocalidad', [ClueController::class, 'buscarUnidadesPorLocalidad']);
+Route::get('/unidades/buscarMunicipiosPorJurisdiccion', [ClueController::class, 'buscarMunicipiosPorJurisdiccion']);
+
+Route::get('/api/unidades/buscarLocalidadesPorMunicipio', [ClueController::class, 'buscarLocalidadesPorMunicipio']);
+
+
+Route::get('/api/unidades/buscarMunicipiosPorJurisdiccion', [ClueController::class, 'buscarMunicipiosPorJurisdiccion']);
+Route::get('/api/unidades/buscarLocalidadesPorMunicipio', [ClueController::class, 'buscarLocalidadesPorMunicipio']);
+Route::get('/api/unidades/buscarLocalidadesPorNombreMunicipio', [ClueController::class, 'buscarLocalidadesPorNombreMunicipio']);

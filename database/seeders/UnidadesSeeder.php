@@ -28,7 +28,6 @@ class UnidadesSeeder extends Seeder
                 'idtipologia_unidad' => $value->idtipologia_unidad,
                 'idinstitucion' => $value->idinstitucion,
                 'idestrato' => $value->idestrato,
-                'idjurisdiccion' => $value->idjurisdiccion,
                 'idtipo_vialidad' => $value->idtipo_vialidad,
                 'idtipo_asentamiento' => $value->idtipo_asentamiento,
                 'idtipo_administracion' => $value->idtipo_administracion,

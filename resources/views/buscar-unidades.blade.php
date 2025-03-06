@@ -13,6 +13,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <style>
         #map {
@@ -46,26 +52,22 @@
     <script>
         let map, markers = [];
         window.clearMarkers = function() {
-    if (markers.length > 0) {
-        markers.forEach(marker => map.removeLayer(marker));
-        markers = [];
-        console.log("Marcadores eliminados correctamente");
-    } else {
-        console.log("No hay marcadores para eliminar");
-    }
-};
+            if (markers.length > 0) {
+                markers.forEach(marker => map.removeLayer(marker));
+                markers = [];
+                console.log("Marcadores eliminados correctamente");
+            } else {
+                console.log("No hay marcadores para eliminar");
+            }
+        };
 
 
         $(document).ready(function() {
-            $('#searchJurisdiccion').html('<option selected>Jurisdicción Sanitaria II Tulancingo</option>').prop('disabled', true);
-            // Llamar a la función cuando cargue la página
-            cargarLocalidades();
             // Configuración de Select2 para CLUES
             function setupCluesSelect2(id, url, placeholder) {
                 $('#' + id).select2({
                     placeholder: placeholder,
                     allowClear: true,
-                    minimumInputLength: 1,
                     ajax: {
                         url: url,
                         dataType: 'json',
@@ -99,6 +101,26 @@
                 });
             }
 
+            $('#searchClues').on('select2:select', function(e) {
+                let data = e.params.data;
+
+                if (data.idmunicipio) {
+                    $('#searchMunicipio')
+                        .empty()
+                        .append(new Option(data.municipio, data.idmunicipio, false, true))
+                        .trigger('change.select2'); // Forzar actualización en Select2
+                } else {}
+
+                if (data.idlocalidad) {
+                    $('#searchLocalidad')
+                        .empty()
+                        .append(new Option(data.localidad, data.idlocalidad, false, true))
+                        .trigger('change.select2');
+                } else {}
+            });
+
+
+
 
             // Configuración de Select2 para Municipios
             function setupMunicipioSelect2(id, url, placeholder) {
@@ -131,124 +153,168 @@
                     }
                 });
             }
-
-            // Cargar localidades al seleccionar la jurisdicción
-            function cargarLocalidades() {
-                $.ajax({
-                    url: '/api/unidades/buscarUnidadesTulancingo',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        let localidadSelect = $('#searchLocalidad');
-                        localidadSelect.empty().append('<option value="">Seleccione una Localidad</option>');
-
-                        if (!data || data.length === 0) {
-                            console.log("No se encontraron localidades.");
-                            return;
-                        }
-
-                        data.forEach(item => {
-                            if (item.unidad_medica) { // Usamos unidad_medica en lugar de nombre
-                                localidadSelect.append(`<option value="${item.unidad_medica}">${item.unidad_medica}</option>`);
-                            } else {
-                                console.log("Dato inválido en la respuesta de la API:", item);
-                            }
-                        });
-                    },
-                    error: function(xhr) {
-                        console.error("Error al cargar localidades:", xhr.responseText);
-                    }
-                });
-            }
-
-
-
-            // Evento para buscar unidades médicas cuando se seleccione una localidad
-            $('#btnSearchLocalidad').click(function() {
-                let localidadNombre = $('#searchLocalidad option:selected').text().trim();
-
-                if (!localidadNombre || localidadNombre === "Seleccione una Localidad") {
-                    alert("Por favor seleccione una localidad antes de buscar.");
-                    return;
-                }
-
-                $.ajax({
-                    url: '/api/unidades/buscarUnidadesPorLocalidad',
-                    type: 'GET',
-                    data: {
-                        localidad: localidadNombre
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.length === 0) {
-                            alert("No hay unidades médicas registradas en esta localidad.");
-                            return;
-                        }
-                        mostrarUnidadesPorLocalidad(data);
-                    },
-                    error: function(xhr) {
-                        alert("Error al buscar unidades: " + xhr.responseText);
-                    }
-                });
-
-            });
-
-            // Función para mostrar la información de unidades médicas en la localidad
-            function mostrarUnidadesPorLocalidad(dataArray) {
-                let unidadesInfo = dataArray.map(data => `
-        <p><strong>CLUES:</strong> ${data.clues || 'No disponible'}</p>
-        <p><strong>Unidad Médica:</strong> ${data.unidad_medica || 'No disponible'}</p>
-        <p><strong>Latitud:</strong> ${data.latitud || 'No disponible'}</p>
-        <p><strong>Longitud:</strong> ${data.longitud || 'No disponible'}</p>
-        <hr>
-    `).join('');
-
-                $('#selectedInfo').html(`<h3>Unidades Médicas en la Localidad</h3>${unidadesInfo}`);
-
-                clearMarkers();
-                dataArray.forEach(item => {
-                    if (item.latitud && item.longitud) {
-                        addMarker(item.latitud, item.longitud, item.unidad_medica, item.clues);
-                    }
-                });
-
-                ajustarMapa();
-            }
-
-
-
-            // Configuración de Select2 para la Jurisdicción Sanitaria II Tulancingo
-            function setupJurisdiccionSelect2(id, url) {
-                $('#' + id).select2({
-                    placeholder: "Jurisdicción Sanitaria II Tulancingo",
+            $(document).ready(function() {
+                // ✅ Select2 para Localidades con AJAX
+                $('#searchLocalidad').select2({
+                    placeholder: "Seleccione una Localidad",
                     allowClear: true,
-                    minimumInputLength: 0,
+                    minimumInputLength: 1, // Inicia búsqueda después de 1 caracter
                     ajax: {
-                        url: url,
-                        dataType: 'json',
+                        url: "/api/unidades/buscarLocalidadesConUnidades",
+                        dataType: "json",
                         delay: 250,
+                        data: function(params) {
+                            return {
+                                query: params.term
+                            };
+                        },
                         processResults: function(data) {
                             return {
                                 results: data.map(item => ({
-                                    id: item.idjurisdiccion,
-                                    text: "Jurisdicción Sanitaria II Tulancingo",
-                                    localidad: item.localidad,
-                                    clues: item.clues,
-                                    unidad_medica: item.unidad_medica,
-                                    latitud: item.latitud,
-                                    longitud: item.longitud
+                                    id: item.idlocalidad,
+                                    text: item.localidad
                                 }))
                             };
                         },
                         cache: true
                     }
                 });
-            }
+
+                // ✅ Evento al seleccionar una Localidad
+                $('#searchLocalidad').on('select2:select', function(e) {
+                    let data = e.params.data;
+                    if (!data || !data.text) {
+                        console.warn("⚠️ No se seleccionó una localidad válida.");
+                        return;
+                    }
+                    buscarUnidadesPorLocalidad(data.text);
+                });
+
+                // ✅ Función para buscar unidades médicas en la localidad seleccionada
+                function buscarUnidadesPorLocalidad(localidadNombre) {
+                    if (!localidadNombre) {
+                        alert("⚠️ Por favor seleccione una localidad.");
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "/api/unidades/buscarUnidadesPorLocalidad",
+                        type: "GET",
+                        data: {
+                            localidad: localidadNombre
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.length > 0) {
+                                mostrarInformacion(response);
+                            } else {
+                                alert("⚠️ No hay unidades médicas registradas en esta localidad.");
+                                $('#selectedInfo').html('<h3>No se encontraron unidades médicas en esta localidad.</h3>');
+                            }
+                        },
+                        error: function(xhr) {
+                            Swal.fire("❌ Error al buscar unidades por localidad: " + xhr.responseText);
+                        }
+                    });
+                }
+                $('#searchMunicipio').select2({
+                    placeholder: "Seleccione un Municipio",
+                    allowClear: true,
+                    minimumInputLength: 1,
+                    ajax: {
+                        url: "/api/unidades/buscarMunicipiosConUnidades",
+                        dataType: "json",
+                        delay: 250,
+                        data: function(params) {
+                            return {
+                                query: params.term
+                            };
+                        },
+                        processResults: function(data) {
+                            return {
+                                results: data.map(item => ({
+                                    id: item.idmunicipio,
+                                    text: item.municipio
+                                }))
+                            };
+                        },
+                        cache: true
+                    }
+                });
+
+                // Evento para capturar selección de municipio
+                $('#searchMunicipio').on('select2:select', function (e) {
+    let data = e.params.data;
+    let nombreMunicipio = data.text; // Ahora usamos el nombre del municipio
+
+    if (!nombreMunicipio) {
+        console.warn("⚠️ No se seleccionó un municipio válido.");
+        return;
+    }
+
+    // ✅ Limpiar las localidades previas
+    $('#searchLocalidad').val(null).trigger('change');
+
+    // 🚀 Cargar localidades filtradas por municipio (nombre)
+    $('#searchLocalidad').select2({
+        placeholder: "Seleccione una Localidad",
+        allowClear: true,
+        ajax: {
+            url: "/api/unidades/buscarLocalidadesPorNombreMunicipio", // Nueva API en Laravel
+            dataType: "json",
+            delay: 250,
+            data: function () {
+                return { municipio: nombreMunicipio }; // Se envía el nombre del municipio
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.idlocalidad,
+                        text: item.localidad
+                    }))
+                };
+            },
+            cache: true
+        }
+    });
+});
+
+
+                function buscarUnidadesPorLocalidad(localidadNombre) {
+                    if (!localidadNombre) {
+                        alert("⚠️ Por favor seleccione una localidad.");
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "/api/unidades/buscarUnidadesPorLocalidad",
+                        type: "GET",
+                        data: {
+                            localidad: localidadNombre
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.length > 0) {
+                                mostrarInformacion(response);
+                            } else {
+                                alert("⚠️ No hay unidades médicas registradas en esta localidad.");
+                                $('#selectedInfo').html('<h3>No se encontraron unidades médicas en esta localidad.</h3>');
+                            }
+                        },
+                        error: function(xhr) {
+                            alert("Error al buscar unidades por localidad: " + xhr.responseText);
+                        }
+                    });
+                }
+
+            });
+
+
+
 
             // Inicializar Select2
             setupCluesSelect2('searchClues', '/api/unidades/buscarClues', 'Ingrese CLUES o Nombre');
             setupMunicipioSelect2('searchMunicipio', '/api/unidades/buscarUnidadesPorMunicipio', 'Seleccione Municipio');
-            setupJurisdiccionSelect2('searchJurisdiccion', '/api/unidades/buscarUnidadesTulancingo');
 
             // Manejo de búsquedas
             function buscarYMostrar(id) {
@@ -259,59 +325,235 @@
                     alert("Por favor seleccione una opción antes de buscar.");
                 }
             }
-
-            $('#btnSearchClues').click(function() {
-                let selectedData = $('#searchClues').select2('data')[0];
-
-                if (selectedData) {
-                    console.log(selectedData);
-
-                    $('#selectedInfo').html(`
-            <h3>Información Seleccionada</h3>
-            <p><strong>CLUES:</strong> ${selectedData.clues}</p>
-            <p><strong>Nombre:</strong> ${selectedData.nombre ? selectedData.nombre : 'No disponible'}</p>
-            <p><strong>Latitud:</strong> ${selectedData.latitud}</p>
-            <p><strong>Longitud:</strong> ${selectedData.longitud}</p>
-        `);
-
-                    if (selectedData.latitud && selectedData.longitud) {
-                        clearMarkers();
-                        addMarker(selectedData.latitud, selectedData.longitud, selectedData.nombre, selectedData.clues);
-                        ajustarMapa();
-                    } else {
-                        alert("No hay coordenadas disponibles para esta unidad.");
-                    }
-                } else {
-                    alert("Por favor seleccione un CLUES antes de buscar.");
+            $('#searchClues, #searchMunicipio, #searchJurisdiccion').select2({
+                placeholder: "Seleccione una opción",
+                allowClear: true,
+                ajax: {
+                    url: function() {
+                        return $(this).attr('data-url');
+                    },
+                    dataType: "json",
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            query: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.map(item => ({
+                                id: item.id,
+                                text: item.nombre || item.municipio || item.jurisdiccion
+                            }))
+                        };
+                    },
+                    cache: true
                 }
             });
 
 
-            $('#btnSearchMunicipio').click(() => buscarYMostrar('searchMunicipio'));
-            $('#btnSearchJurisdiccion').click(function() {
-                let jurisdiccionNombre = $('#searchJurisdiccion option:selected').text();
 
-                if (!jurisdiccionNombre || jurisdiccionNombre === "Seleccione una Jurisdicción") {
-                    alert("Por favor seleccione una jurisdicción antes de buscar.");
+            $('#searchClues').select2({
+                placeholder: "Ingrese CLUES o Nombre",
+                allowClear: true,
+                minimumInputLength: 1,
+                ajax: {
+                    url: "/api/unidades/buscarClues",
+                    dataType: "json",
+                    delay: 250,
+                    minimumInputLength: 1,
+                    data: function(params) {
+                        return {
+                            query: params.term
+                        };
+                        console.log("Datos de la respuesta:", data);
+
+                    },
+
+                    processResults: function(data) {
+                        return {
+                            results: data.map(item => ({
+                                id: item.clues,
+                                text: `${item.nombre} (CLUES: ${item.clues})`,
+                                clues: item.clues,
+                                nombre: item.nombre,
+                                latitud: item.latitud,
+                                longitud: item.longitud,
+                                idmunicipio: item.idmunicipio,
+                                municipio: item.municipio,
+                                idlocalidad: item.idlocalidad,
+                                localidad: item.localidad,
+                                idjurisdiccion: item.idjurisdiccion,
+                                jurisdiccion: item.jurisdiccion
+                            }))
+                        };
+                    },
+                    cache: true
+                }
+            });
+
+            $('#searchClues').on('select2:select', function(e) {
+                let data = e.params.data;
+
+                if (data.latitud && data.longitud) {
+                    addMarker(data.latitud, data.longitud, data.nombre, data.clues);
+                    ajustarMapa();
+                }
+
+                if (data.idmunicipio) {
+                    $('#searchMunicipio')
+                        .empty()
+                        .append(new Option(data.municipio, data.idmunicipio, false, true))
+                        .trigger('change.select2');
+                } else {}
+
+                if (data.idlocalidad) {
+                    $('#searchLocalidad')
+                        .empty()
+                        .append(new Option(data.localidad, data.idlocalidad, false, true))
+                        .trigger('change.select2');
+                } else {
+                    console.log("No se encontró idlocalidad en la respuesta.");
+                }
+
+                if (data.idjurisdiccion) {
+                    $('#searchJurisdiccion')
+                        .empty()
+                        .append(new Option(data.jurisdiccion, data.idjurisdiccion, false, true))
+                        .trigger('change.select2');
+                } else {
+                    console.log("No se encontró idjurisdiccion en la respuesta.");
+                }
+            });
+
+
+
+            $('#searchJurisdiccion').select2({
+                placeholder: "Seleccione una Jurisdicción",
+                allowClear: true,
+                ajax: {
+                    url: "/api/unidades/buscarJurisdicciones",
+                    dataType: "json",
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            query: params.term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data.map(item => ({
+                                id: item.idjurisdiccion,
+                                text: item.jurisdiccion
+                            }))
+                        };
+                    },
+                    cache: true
+                }
+            });
+
+            $('#searchJurisdiccion').on('select2:select', function (e) {
+    let data = e.params.data;
+    let idJurisdiccion = data.id;
+
+    if (!idJurisdiccion) {
+        Swal.fire("⚠️ Atención", "Seleccione una jurisdicción válida.", "warning");
+        return;
+    }
+
+    // Limpiar selects dependientes
+    $('#searchMunicipio').val(null).trigger('change');
+    $('#searchLocalidad').val(null).trigger('change');
+
+    // Cargar municipios filtrados por jurisdicción
+    $('#searchMunicipio').select2({
+        placeholder: "Seleccione un Municipio",
+        allowClear: true,
+        ajax: {
+            url: "/api/unidades/buscarMunicipiosPorJurisdiccion",
+            dataType: "json",
+            delay: 250,
+            data: function () {
+                return { idjurisdiccion: idJurisdiccion };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.idmunicipio,
+                        text: item.municipio
+                    }))
+                };
+            },
+            cache: true
+        }
+    });
+});
+
+
+
+
+
+            $('#searchMunicipio').select2({
+                placeholder: "Seleccione un Municipio",
+                allowClear: true,
+                ajax: {
+                    url: "/api/unidades/buscarMunicipiosPorJurisdiccion", 
+                    dataType: "json",
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            idjurisdiccion: $('#searchJurisdiccion').val()
+                        };
+                    },
+                    processResults: function(data) {
+                        console.log("🔄 Datos recibidos:", data);
+                        return {
+                            results: data.map(item => ({
+                                id: item.idmunicipio,
+                                text: item.municipio
+                            }))
+                        };
+                    },
+                    cache: true
+                }
+            });
+
+            $('#searchMunicipio').on('select2:select', function(e) {
+                let data = e.params.data;
+                let nombreMunicipio = data.text; 
+
+                if (!nombreMunicipio) {
+                    Swal.alert("⚠️ No se seleccionó un municipio válido.");
                     return;
                 }
 
-                $.ajax({
-                    url: '/api/unidades/buscarUnidadesTulancingo',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.length === 0) {
-                            alert("No hay unidades médicas registradas en esta jurisdicción.");
-                            return;
-                        }
-                        mostrarUnidadesPorJurisdiccion(data);
-                    },
-                    error: function(xhr) {
-                        alert("Error al buscar unidades: " + xhr.responseText);
+                //Limpiar las localidades previas
+                $('#searchLocalidad').val(null).trigger('change');
+
+                //Cargar localidades filtradas por municipio (nombre)
+                $('#searchLocalidad').select2({
+                    placeholder: "Seleccione una Localidad",
+                    allowClear: true,
+                    ajax: {
+                        url: "/api/unidades/buscarLocalidadesPorNombreMunicipio",
+                        dataType: "json",
+                        delay: 250,
+                        data: function() {
+                            return {
+                                municipio: nombreMunicipio
+                            }; // Enviar el NOMBRE del municipio
+                        },
+                        processResults: function(data) {
+                            return {
+                                results: data.map(item => ({
+                                    id: item.idlocalidad,
+                                    text: item.localidad
+                                }))
+                            };
+                        },
+                        cache: true
                     }
                 });
-
             });
 
             function mostrarUnidadesPorJurisdiccion(dataArray) {
@@ -416,7 +658,7 @@
 
             // Inicializar el mapa
             // Inicializar el mapa en Tulancingo, Hidalgo
-            map = L.map('map').setView([20.05, -98.21], 10); // Ajuste de nivel de zoom para visualizar mejor el área
+            map = L.map('map').setView([20.05, -98.21], 10); 
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
@@ -424,54 +666,48 @@
 
         });
         window.addMarker = function(lat, lng, name, clues) {
-    let marker = L.marker([lat, lng]).addTo(map)
-        .bindPopup(`<b>${name}</b><br>CLUES: ${clues}`)
-        .openPopup();
-    markers.push(marker);
-};
+            let marker = L.marker([lat, lng]).addTo(map)
+                .bindPopup(`<b>${name}</b><br>CLUES: ${clues}`)
+                .openPopup();
+            markers.push(marker);
+        };
 
-window.ajustarMapa = function() {
-    if (markers.length === 0) return;
-    let group = new L.featureGroup(markers);
-    map.fitBounds(group.getBounds(), {
-        padding: [50, 50]
-    });
-};
-
-
+        window.ajustarMapa = function() {
+            if (markers.length === 0) return;
+            let group = new L.featureGroup(markers);
+            map.fitBounds(group.getBounds(), {
+                padding: [50, 50]
+            });
+        };
     </script>
 
 </head>
 
 <body>
 
-    <h1>Buscar Unidades de Salud</h1>
+    <h1>Fltros de Busqueda</h1>
 
     <fieldset>
-        <legend>Búsqueda por CLUES</legend>
-        <select id="searchClues" style="width: 50%;"></select>
+        <legend>Jurisdicción o Zona</legend>
+        <select id="searchJurisdiccion" style="width: 50%;"></select>
     </fieldset>
 
     <fieldset>
-        <legend>Búsqueda por Municipio</legend>
+        <legend>Municipio</legend>
         <select id="searchMunicipio" style="width: 50%;"></select>
     </fieldset>
 
     <fieldset>
-        <legend>Seleccione una Localidad</legend>
-        <label for="searchLocalidad">Localidad:</label>
+        <legend>Localidad</legend>
         <select id="searchLocalidad" style="width: 50%;">
             <option value="">Seleccione una Localidad</option>
         </select>
     </fieldset>
 
     <fieldset>
-        <legend>Jurisdicción Sanitaria II Tulancingo</legend>
-        <select id="searchJurisdiccion" style="width: 50%;"></select>
-        <button id="btnSearchJurisdiccion" style="margin-top: 10px; padding: 5px 10px; cursor: pointer;">Buscar</button>
+        <legend>CLUES o Nombre de la Unidad</legend>
+        <select id="searchClues" style="width: 50%;"></select>
     </fieldset>
-
-
 
     <button id="btnResetFilters" style="margin-top: 10px; padding: 5px 10px; cursor: pointer;">Restablecer Filtros</button>
     <button id="btnGlobalSearch" style="margin-top: 10px; padding: 5px 10px; cursor: pointer;">Buscar</button>
@@ -479,11 +715,7 @@ window.ajustarMapa = function() {
     <div id="selectedInfo"></div>
     <div id="map"></div>
 
-
-    <div id="selectedInfo"></div>
-    <div id="map"></div>
     <script src="{{ asset('js/buttons.js') }}"></script>
-    <script src="{{ asset('js/autofill.js') }}"></script>
 
 </body>
 
