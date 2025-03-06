@@ -182,19 +182,48 @@
                 });
 
                 // ✅ Evento al seleccionar una Localidad
-                $('#searchLocalidad').on('select2:select', function(e) {
-                    let data = e.params.data;
-                    if (!data || !data.text) {
-                        console.warn("⚠️ No se seleccionó una localidad válida.");
-                        return;
-                    }
-                    buscarUnidadesPorLocalidad(data.text);
-                });
+                $('#searchLocalidad').on('select2:select', function (e) {
+    let data = e.params.data;
+    let localidadSeleccionada = data.text;
+
+    if (!localidadSeleccionada) {
+        console.warn("⚠️ No se seleccionó una localidad válida.");
+        return;
+    }
+
+    // Llamada a la API para obtener los CLUES según la localidad
+    $('#searchClues').select2({
+        placeholder: "Seleccione CLUES o Nombre",
+        allowClear: true,
+        ajax: {
+            url: "/api/unidades/buscarCluesPorLocalidad",
+            dataType: "json",
+            delay: 250,
+            data: function () {
+                return { localidad: localidadSeleccionada }; // Enviar el nombre de la localidad
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(item => ({
+                        id: item.clues,
+                        text: `${item.unidad_medica} (CLUES: ${item.clues})`
+                    }))
+                };
+            },
+            cache: true
+        }
+    });
+});
 
                 // ✅ Función para buscar unidades médicas en la localidad seleccionada
                 function buscarUnidadesPorLocalidad(localidadNombre) {
                     if (!localidadNombre) {
                         alert("⚠️ Por favor seleccione una localidad.");
+                        Swal.fire({
+                            title: "Alerta",
+                            text: "¡Por favor seleccione una localidad!",
+                            icon: "success"
+                            });
                         return;
                     }
 
@@ -413,17 +442,13 @@
                         .empty()
                         .append(new Option(data.localidad, data.idlocalidad, false, true))
                         .trigger('change.select2');
-                } else {
-                    console.log("No se encontró idlocalidad en la respuesta.");
-                }
+                } 
 
                 if (data.idjurisdiccion) {
                     $('#searchJurisdiccion')
                         .empty()
                         .append(new Option(data.jurisdiccion, data.idjurisdiccion, false, true))
                         .trigger('change.select2');
-                } else {
-                    console.log("No se encontró idjurisdiccion en la respuesta.");
                 }
             });
 
@@ -721,7 +746,7 @@
     <footer>
         <p>&copy; 2025 Prototipo de mapa interactivo de unidades médicas. | <a href="#">Privacidad</a> | <a href="#">Términos</a></p>
     </footer>
-    <script src="{{ asset('js/buttons.js') }}"></script>
+    
     <script>
         let map = L.map('map').setView([20.05, -98.21], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -733,7 +758,8 @@
             allowClear: true
         });
     </script>
-
+    <script src="{{ asset('js/buttons.js') }}"></script>
 </body>
+
 
 </html>

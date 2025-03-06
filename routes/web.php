@@ -164,3 +164,8 @@ Route::get('/api/unidades/buscarLocalidadesPorMunicipio', [ClueController::class
 Route::get('/api/unidades/buscarMunicipiosPorJurisdiccion', [ClueController::class, 'buscarMunicipiosPorJurisdiccion']);
 Route::get('/api/unidades/buscarLocalidadesPorMunicipio', [ClueController::class, 'buscarLocalidadesPorMunicipio']);
 Route::get('/api/unidades/buscarLocalidadesPorNombreMunicipio', [ClueController::class, 'buscarLocalidadesPorNombreMunicipio']);
+
+
+Route::get('/api/unidades/buscarCluesPorLocalidad', [ClueController::class, 'buscarCluesPorLocalidad']);
+Route::get('/api/unidades/buscarCluesPorLocalidad', [ClueController::class, 'buscarCluesPorLocalidad']);
+Route::get('/api/unidades/buscarUnidades', [ClueController::class, 'buscarUnidades']);

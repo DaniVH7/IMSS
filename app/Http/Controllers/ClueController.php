@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
+use App\Models\Unidad;
 
 use Illuminate\Http\Request;
 
@@ -320,5 +321,34 @@ public function buscarLocalidadesPorNombreMunicipio(Request $request)
     }
 }
 
+public function buscarCluesPorLocalidad(Request $request)
+{
+    $nombreLocalidad = $request->input('localidad');
+
+    if (!$nombreLocalidad) {
+        return response()->json(['error' => 'Falta el nombre de la localidad'], 400);
+    }
+
+    try {
+        $unidades = DB::table('unidades as u')
+            ->join('localidades as l', function ($join) {
+                $join->on('l.idestado', '=', 'u.idestado')
+                     ->on('l.idmunicipio', '=', 'u.idmunicipio')
+                     ->on('l.idlocalidad', '=', 'u.idlocalidad');
+            })
+            ->where('l.localidad', 'LIKE', "%{$nombreLocalidad}%") // Búsqueda por nombre
+            ->select('u.clues', 'u.nombre as unidad_medica', 'l.localidad', 'u.latitud', 'u.longitud')
+            ->get();
+
+        if ($unidades->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron unidades en esta localidad'], 404);
+        }
+
+        return response()->json($unidades);
+
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error en la consulta: ' . $e->getMessage()], 500);
+    }
+}
 
 }
