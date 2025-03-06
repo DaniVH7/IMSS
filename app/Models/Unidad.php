@@ -101,7 +101,7 @@ class Unidad extends Model
     }
 
     public function motivoBaja() {
-        return $this->belongsTo(MotivoBaja::class, 'idmotivo_baja', 'idmotivo_baja');
+        return $this->belongsTo(MotivosBaja::class, 'idmotivo_baja', 'idmotivo_baja');
     }
 
     public function tipoEstablecimiento() {

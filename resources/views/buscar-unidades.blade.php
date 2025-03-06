@@ -9,6 +9,7 @@
     <!-- Estilos de Select2 y Leaflet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ asset('css/mapa.css') }}">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -684,38 +685,54 @@
 </head>
 
 <body>
+    <header>
+        <div class="header-top">
+            <div class="logo">Buscar Unidades de Salud</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="filters">
+            <h2>Filtrar Unidades de Salud</h2>
 
-    <h1>Fltros de Busqueda</h1>
+            <label for="searchJurisdiccion">Jurisdicción o Zona:</label>
+            <select id="searchJurisdiccion" class="select2" style="width: 100%;"></select>
 
-    <fieldset>
-        <legend>Jurisdicción o Zona</legend>
-        <select id="searchJurisdiccion" style="width: 50%;"></select>
-    </fieldset>
+            <label for="searchMunicipio">Municipio:</label>
+            <select id="searchMunicipio" class="select2" style="width: 100%;"></select>
+            
+            <label for="searchLocalidad">Localidad:</label>
+            <select id="searchLocalidad" class="select2" style="width: 100%;"></select>
+            
+            <label for="searchClues">CLUES o Nombre de la Unidad:</label>
+            <select id="searchClues" class="select2" style="width: 100%;"></select>
+            
+            <button id="btnGlobalSearch">Buscar</button>
+            <button id="btnResetFilters">Restablecer Filtros</button>
+        </div>
 
-    <fieldset>
-        <legend>Municipio</legend>
-        <select id="searchMunicipio" style="width: 50%;"></select>
-    </fieldset>
+        <div class="map">
+            <div id="map"></div>
+        </div>
+    </div>
 
-    <fieldset>
-        <legend>Localidad</legend>
-        <select id="searchLocalidad" style="width: 50%;">
-            <option value="">Seleccione una Localidad</option>
-        </select>
-    </fieldset>
+    <div id="selectedInfo" class="resultado-busqueda"></div>
 
-    <fieldset>
-        <legend>CLUES o Nombre de la Unidad</legend>
-        <select id="searchClues" style="width: 50%;"></select>
-    </fieldset>
-
-    <button id="btnResetFilters" style="margin-top: 10px; padding: 5px 10px; cursor: pointer;">Restablecer Filtros</button>
-    <button id="btnGlobalSearch" style="margin-top: 10px; padding: 5px 10px; cursor: pointer;">Buscar</button>
-
-    <div id="selectedInfo"></div>
-    <div id="map"></div>
-
+    <footer>
+        <p>&copy; 2025 Prototipo de mapa interactivo de unidades médicas. | <a href="#">Privacidad</a> | <a href="#">Términos</a></p>
+    </footer>
     <script src="{{ asset('js/buttons.js') }}"></script>
+    <script>
+        let map = L.map('map').setView([20.05, -98.21], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        
+        $('.select2').select2({
+            placeholder: "Seleccione una opción",
+            allowClear: true
+        });
+    </script>
 
 </body>
 

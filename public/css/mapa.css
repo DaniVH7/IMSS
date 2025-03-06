@@ -1,0 +1,225 @@
+/* ============================= */
+/*      Fuentes Institucionales  */
+/* ============================= */
+@font-face{    
+    font-family: "Institucional-Light";    
+    src: url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Light.otf");
+}
+
+@font-face{ 
+    font-family: "Institucional-Regular";    
+    src:url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Regular.otf");
+} 
+
+@font-face{    
+    font-family: "Institucional-Black";    
+    src: url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Black.otf");
+}
+
+@font-face{ 
+    font-family: "Institucional-Medium";
+    src:url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Medium.otf");
+}
+
+@font-face{ 
+    font-family: "Institucional-Semibold";    
+    src:url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Book.otf");
+} 
+
+@font-face{ 
+    font-family: "Institucional-Bold";    
+    src:url("https://ibhidalgo.org/cdn/fuentes/Geomanist/Geomanist-Bold.otf");
+} 
+/* ============================= */
+/*        Colores Institucionales  */
+/* ============================= */
+:root {
+    --colorInstitucional1: #235B4E;
+    --colorInstitucional2: #10312B;
+    --colorInstitucional3: #DDC9A3;
+    --colorInstitucional4: #BC955C;
+    --colorInstitucional9: #FFFFFF;
+    --colorHeaderDark: #691C32;
+    --colorHeaderLight: #BC955C;
+    --colorFooter: #691C32;
+    --colorFooterText: #FFFFFF;
+    --colorBotonHover: #8B5E34;
+}
+
+/* ============================= */
+/*      Estilos Generales        */
+/* ============================= */
+body {
+    font-family: "Institucional-Regular", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--colorInstitucional9);
+    color: var(--colorInstitucional2);
+}
+
+/* ============================= */
+/*          Header               */
+/* ============================= */
+header {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 4px solid var(--colorHeaderLight);
+}
+
+.header-top {
+    background-color: var(--colorHeaderDark);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+.header-top .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: "Institucional-Bold", Arial, sans-serif;
+}
+
+/* ============================= */
+/*          Layout               */
+/* ============================= */
+.container {
+    display: flex;
+    height: calc(100vh - 140px);
+}
+
+/* ============================= */
+/*      Filtros de Búsqueda      */
+/* ============================= */
+.filters {
+    width: 25%;
+    padding: 1.5rem;
+    background-color: white;
+    border-right: 3px solid var(--colorInstitucional4);
+}
+
+.filters label {
+    font-size: 1rem;
+    color: var(--colorInstitucional2);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.filters select, .filters button{
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border: 2px solid var(--colorInstitucional1);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: white;
+    font-family: "Institucional-Regular", Arial, sans-serif;
+}
+
+.filters input {
+    width: 92%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border: 2px solid var(--colorInstitucional1);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: white;
+    font-family: "Institucional-Regular", Arial, sans-serif;
+}
+
+.filters button {
+    background-color: var(--colorInstitucional1);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: "Institucional-Regular", Arial, sans-serif;
+}
+
+.filters button:hover {
+    background-color: var(--colorBotonHover);
+}
+
+/* ============================= */
+/*            Mapa               */
+/* ============================= */
+.map {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#map {
+    width: 95%;
+    height: 90%;
+    border-radius: 12px;
+}
+
+/* ============================= */
+/*  Resultados y Sugerencias     */
+/* ============================= */
+#sugerencias {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    max-height: 150px;
+    overflow-y: auto;
+    width: calc(50% - 40px);
+    z-index: 1000;
+    display: none;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#sugerencias div {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    font-family: "Institucional-Regular", Arial, sans-serif;
+}
+
+#sugerencias div:hover {
+    background-color: #f4f4f4;
+}
+
+.resultado-busqueda {
+    padding: 1rem;
+    background: #f9f9f9;
+    font-family: "Institucional-Regular", Arial, sans-serif;
+}
+
+.resultado-busqueda ul {
+    list-style: none;
+    padding: 0;
+}
+
+.resultado-busqueda li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+}
+
+.resultado-busqueda li:hover {
+    background-color: #eee;
+}
+
+/* ============================= */
+/*          Footer               */
+/* ============================= */
+footer {
+    background-color: var(--colorFooter);
+    color: var(--colorFooterText);
+    text-align: center;
+    padding: 1rem;
+    font-family: "Institucional-Semibold", Arial, sans-serif;
+}
+
+footer a {
+    color: var(--colorFooterText);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
